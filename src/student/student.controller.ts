@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Put, Param, Body} from "@nestjs/common";
+import { Controller, Get, Post, Put, Param, Body, UseGuards} from "@nestjs/common";
 import {CreateStudentDto, UpdateStudentDto,FindStudentsResponseDto,StudentsResponseDto} from "./dto/student.dto";
 import { StudentService } from './student.service';
+import { TestGuard} from '../common/guards/test.guard';
+import { ParseIntPipe, ParseUUIDPipe, SetMetadata } from "@nestjs/common";
+import { Test } from '@nestjs/testing';
 
-import { ParseIntPipe, ParseUUIDPipe } from "@nestjs/common";
+
 @Controller('students')
+// @UseGuards(TestGuard) 
+@UseGuards(TestGuard) //using the instance of the guards
 export class StudentController{
     constructor( private readonly studentService: StudentService){
         console.log('student controller created')
@@ -13,6 +18,7 @@ export class StudentController{
         return  this.studentService.getStudents();
     }
     @Get('/:studentId')
+    @SetMetadata('roles', ['admin',])
     getStudentById(@Param('studentId',ParseUUIDPipe ) studentId: string): FindStudentsResponseDto{
         
         console.log(studentId)

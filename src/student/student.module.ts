@@ -20,5 +20,6 @@ export class StudentModule implements NestModule {
             {path : 'students/:studentId',method: RequestMethod.PUT}
         )
     }
+    
 
 }
